@@ -24,7 +24,7 @@ public class TicketServiceImpl implements TicketService
 	// List of levels with Id, Name, Price, Rows and Seats
 	List<Level> levels =new ArrayList<Level>();
 	
-	// Seats blocked or reserved by SeatHoldId
+	// Seats held or reserved by SeatHoldId
 	private Map<Integer, SeatHold> seatsHeld = new HashMap<Integer, SeatHold>();	
 	
 	// Map which stores TimerTasks by seatHoldId
@@ -113,10 +113,7 @@ public class TicketServiceImpl implements TicketService
 	}
 	
 	/********************************************************************
-	 * Method reserves the block of seats already held provided with the seatHoldID
-	 * 
-	 * Throws a RuntimeException if seatHold is not already done
-	 * 
+	 * Method changes the status of seats based on reserve or release seats
 	 ********************************************************************/
 	public String changeStatus(int seatHoldId, int status) 
 	{
@@ -155,7 +152,7 @@ public class TicketServiceImpl implements TicketService
 		{
 			System.out.println( numSeatsAffected + " seats reserved for SeatHoldID: '" + seatHoldId + "'.");
 			System.out.println("Please pay : $"+totalAmount + " either by cash / credit card.");
-			System.out.println("***** ENJOY THE SHOW *****");
+			System.out.println("***** Enjoy the show, " + seatHeld.getCustomer() + " *****");
 		}
 		return "Success";
 	}
@@ -203,12 +200,12 @@ public class TicketServiceImpl implements TicketService
 			SeatHold seatsHold = new SeatHold(customer, seats);
 			seatsHeld.put(SeatHoldCounter.nextId(), seatsHold);
 			System.out.println(seatsHeldStr);
-			System.out.println("Your SeatHoldID is '" + SeatHoldCounter.getId() + "'");
+			System.out.println(customer +", Your SeatHoldID is '" + SeatHoldCounter.getId() + "'");
 			//int expiresIn = Integer.parseInt( configFile.getProperty("holdTimeout"));
 			if (seats.size() != numSeats)
 			{
 				System.out.println("Only " + seats.size() + " out of " + numSeats + ""
-						+ " seats blocked for the given criteria.");
+						+ " seats held for the given criteria.");
 			}
 			else
 			{
